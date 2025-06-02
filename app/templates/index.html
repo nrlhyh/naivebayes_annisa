@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Klasifikasi Kualitas Air Algoritma Naive Bayes</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Klasifikasi Kelayakan Air untuk Budidaya Ikan</h1>
+        <form method="POST" action="/predict">
+            {% set labels = {
+                'kecerahan': 'Kecerahan (NTU) (0 - 100)',
+                'kekeruhan': 'Kekeruhan (NTU) (0 - 100)',
+                'ph': 'pH Level (4 - 9)',
+                'suhu': 'Suhu (°C) (15 - 40)',
+                'salinitas': 'Salinitas (ppt) (0 - 35)',
+                'TSS': 'TSS (mg/L) (0 - 50)',
+                'BOD5': 'BOD5 (mg/L) (0 - 10)',
+                'Do': 'DO (mg/L) (3 - 14)',
+                'M&L': 'M&L (CFU/mL) (0 - 1000)',
+                'Coliform': 'Coliform (MPN/100 mL) (0 - 500)',
+                'NO3N': 'NO3N (mg/L) (0 - 20)',
+                'Orthophospate': 'Orthophospate (mg/L) (0 - 5)'
+            } %}
+            {% for key, label in labels.items() %}
+                <label for="{{ key }}">{{ label }}</label>
+                <input type="number" step="any" name="{{ key }}" id="{{ key }}" required
+                       value="{{ request.form[key] if request.form[key] else '' }}">
+            {% endfor %}
+            <input type="submit" value="Proses">
+        </form>
+        {% if result %}
+            <div class="result">
+                Hasil Prediksi Klasifikasi: <strong>{{ result }}</strong>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
